@@ -5,6 +5,8 @@ async function deleteTask(req, res) {
   try {
     if (id) {
       const deleteTask = await Task.findByIdAndDelete({ _id: id });
+
+      console.log(deleteTask);
       if (deleteTask) {
         return res.status(200).json({ success: true, ...deleteTask });
       }
