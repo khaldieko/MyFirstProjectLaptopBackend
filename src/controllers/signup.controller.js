@@ -18,8 +18,10 @@ async function signUp(req, res) {
       );
     }
     const validPassword = passwordValidator(password);
+
     if (validPassword) {
       const findUser = await User.findOne({ username });
+
       if (findUser) {
         return res
           .status(400)
@@ -29,7 +31,7 @@ async function signUp(req, res) {
       const hash = bcrypt.hashSync(password, salt);
       if (hash) {
         const newUser = await User.create({ username, password });
-        const { password: userPassword, ...bioData } = await newUser.save();
+        const bioData = await newUser.save();
         if (newUser) {
           jwt.sign(
             { id: newUser._id },
@@ -37,33 +39,31 @@ async function signUp(req, res) {
             { expiresIn: 86000 },
             (error, token) => {
               if (error) {
-                console.log(error);
                 return res.status(500).json({
                   status: "failed",
                   message: "unable to complete request",
                 });
               }
 
-              console.log(bioData);
-
               return res.status(200).json({
                 status: "success",
                 data: {
+                  id: bioData.id,
+                  username: bioData.username,
                   token: `Bearer ${token}`,
-                  ...bioData,
                 },
               });
             }
           );
         }
       }
+    } else {
+      throw new ValidationError(
+        "password must be Alphanumeric and must not be less than 7 characters",
+        "Invalid password composition"
+      );
     }
-    throw new ValidationError(
-      "password must be Alphanumeric and must not be less than 7 characters",
-      "Invalid password composition"
-    );
   } catch (error) {
-    console.log(error);
     if (error instanceof ValidationError) {
       res.status(error.status).json({
         status: "failed",
