@@ -14,7 +14,7 @@ router.get("/task", auth, findTask);
 router.get("/tasks", auth, findTasks);
 router.patch("/tasks", auth, editTask);
 router.post("/tasks", auth, createTask);
-router.post("/auth/signup", auth, signUp);
-router.post("/auth/login", auth, login);
+router.post("/auth/signup", signUp);
+router.post("/auth/login",login);
 
 module.exports = router;
