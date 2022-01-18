@@ -55,15 +55,19 @@ async function signUp(req, res) {
         }
       }
     }
+    throw new ValidationError(
+      "password must be Alphanumeric and must not be less than 7 characters",
+      "Invalid password composition"
+    );
   } catch (error) {
-      console.log(error);
+    console.log(error);
     if (error instanceof ValidationError) {
       res.status(error.status).json({
         status: "failed",
         message: `Validation error: ${error.message}, but got ${error.cause}`,
       });
       return;
-    } 
+    }
     return res.status(500).json({
       status: "failed",
       message: "unable to complete request",
