@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt");
 
 const generateToken = require("../utils/generateToken.js");
 const dotenv = require("dotenv");
-
+const jwt = require("jsonwebtoken");
 const { ValidationError } = require("../Error/customError");
 const { sign } = require("jsonwebtoken");
 dotenv.config();
