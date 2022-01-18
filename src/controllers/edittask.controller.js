@@ -19,7 +19,7 @@ async function editTask(req, res) {
       ).exec();
 
       if (editTask) {
-        return res.status(200).json({ data: edittask });
+        return res.status(200).json({ status:"success", data: edittask });
       }
     }
   } catch (error) {

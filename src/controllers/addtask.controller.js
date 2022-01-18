@@ -7,7 +7,7 @@ async function createTask(req, res) {
     if (description) {
       const createTask = await Task.create({ description });
       if (createTask) {
-        return res.status(200).json({ status: "success", ...createTask });
+        return res.status(200).json({ status: "success", message:"created task successfully" });
       }
     }
     throw new ValidationError("Expected task description", description);
