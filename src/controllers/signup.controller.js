@@ -9,6 +9,7 @@ dotenv.config();
 
 async function signUp(req, res) {
   const { username, password } = req.body;
+
   try {
     if (!username || !password) {
       throw new ValidationError(
@@ -28,7 +29,7 @@ async function signUp(req, res) {
       const hash = bcrypt.hashSync(password, salt);
       if (hash) {
         const newUser = await User.create({ username, password });
-        const { password, ...bioData } = await newUser.save();
+        const { password: userPassword, ...bioData } = await newUser.save();
         if (newUser) {
           jwt.sign(
             { id: newUser._id },
@@ -42,6 +43,8 @@ async function signUp(req, res) {
                   message: "unable to complete request",
                 });
               }
+
+              console.log(bioData);
 
               return res.status(200).json({
                 status: "success",
