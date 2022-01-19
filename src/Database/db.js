@@ -12,7 +12,7 @@ mongoose.connection.on("disconnected", () => {
 });
 
 mongoose.connection.on("reconnect", () => {
-  console.log("database reconnect");
+  console.log("database reconnected");
 });
 
 mongoose.connection.on("error", (error) => {
