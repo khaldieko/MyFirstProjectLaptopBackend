@@ -2,11 +2,12 @@ const Task = require("../model/task.model.js");
 const { ValidationError } = require("../Error/customError");
 
 async function createTask(req, res) {
-  const { description } = req.body;
-  const { user } = req;
+  const { description, user } = req.body;
+
   try {
     if (description) {
-      const createTask = await Task.create({ description, user: user._id });
+      const createTask = await Task.create({ description, user });
+
       if (createTask) {
         return res
           .status(200)
@@ -15,7 +16,6 @@ async function createTask(req, res) {
     }
     throw new ValidationError("Expected task description", description);
   } catch (error) {
-    console.log(error);
     if (error instanceof ValidationError) {
       res.status(error.status).json({
         status: "failed",

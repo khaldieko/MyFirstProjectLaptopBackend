@@ -2,8 +2,9 @@ const Task = require("../model/task.model.js");
 const { ValidationError, NotFound } = require("../Error/customError");
 
 async function findTasks(req, res) {
+  const { user } = req;
   try {
-    let tasks = await Task.find().exec();
+    let tasks = await Task.find({ user: user.id ? user.id : user._id }).exec();
     if (tasks) {
       return res.status(200).json({ status: "success", tasks }).end();
     }
